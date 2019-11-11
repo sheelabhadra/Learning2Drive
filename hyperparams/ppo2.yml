@@ -1,0 +1,10 @@
+DonkeyVae-v0:
+  # normalize: "{'norm_obs': True, 'norm_reward': False}"
+  n_timesteps: !!float 10000
+  policy: 'MlpPolicy'
+  # n_steps min
+  n_steps: 256
+  noptepochs: 10
+  nminibatches: 4
+  ent_coef: 0.0
+  learning_rate: lin_3e-3

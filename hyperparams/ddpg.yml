@@ -1,0 +1,13 @@
+Env:
+  n_timesteps: !!float 5000
+  policy: 'CustomDDPGPolicy'
+  noise_type: 'ornstein-uhlenbeck'
+  # noise_type: 'adaptive-param'
+  noise_std: 0.2
+  memory_limit: 10000
+  batch_size: 64
+  clip_norm: 0.005
+  gamma: 0.99
+  nb_train_steps: 300
+  # normalize_observations: True
+  # normalize_returns: True
