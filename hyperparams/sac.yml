@@ -1,18 +1,11 @@
 Env:
-  # normalize: "{'norm_obs': True, 'norm_reward': False}"
   n_timesteps: !!float 5000
-  # policy: 'TinySACPolicy'
   policy: 'CustomSACPolicy'
   learning_rate: !!float 3e-4
-  # learning_rate: lin_3e-3
-  # buffer_size: 30000
   buffer_size: 30000
-  # batch_size: 64
   batch_size: 64
   train_freq: 3000
   gamma: 0.99
   ent_coef: 'auto_0.1'
-  # ent_coef: 0.05
   gradient_steps: 600
   learning_starts: 300
-  # frame_stack: 3

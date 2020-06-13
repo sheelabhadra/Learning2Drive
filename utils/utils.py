@@ -21,13 +21,9 @@ from algos import DDPG, SAC, PPO2
 from environment.env import Env
 
 from vae.controller import VAEController
-from config import MIN_THROTTLE, MAX_THROTTLE, MAX_CTE_ERROR, LEVEL, FRAME_SKIP, \
-    N_COMMAND_HISTORY, TEST_FRAME_SKIP
+from config import MIN_THROTTLE, MAX_THROTTLE, FRAME_SKIP, N_COMMAND_HISTORY, TEST_FRAME_SKIP
 
 ALGOS = {
-    # 'a2c': A2C,
-    # 'acer': ACER,
-    # 'acktr': ACKTR,
     'ddpg': DDPG,
     'sac': SAC,
     'ppo2': PPO2
@@ -60,8 +56,7 @@ class TinySACPolicy(SACPolicy):
 class CustomSACPolicy(SACPolicy):
     def __init__(self, *args, **kwargs):
         super(CustomSACPolicy, self).__init__(*args, **kwargs,
-                                              layers=[32, 16],
-                                              act_fun=tf.nn.elu,
+                                              layers=[64, 64],
                                               feature_extraction="mlp")
 
 class CustomDDPGPolicy(DDPGPolicy):
@@ -96,8 +91,7 @@ def load_vae(path=None, z_size=None):
     return vae
 
 
-def make_env(client, seed=0, log_dir=None, vae=None, frame_skip=None,
-             teleop=False, n_stack=1):
+def make_env(client, seed=0, log_dir=None, vae=None, frame_skip=None, n_stack=1):
     """
     Helper function to multiprocess training
     and log the progress.
@@ -121,8 +115,7 @@ def make_env(client, seed=0, log_dir=None, vae=None, frame_skip=None,
             max_throttle=MAX_THROTTLE, n_command_history=N_COMMAND_HISTORY,
             n_stack=n_stack)
         env.seed(seed)
-        if not teleop:
-            env = Monitor(env, log_dir, allow_early_resets=True)
+        env = Monitor(env, log_dir, allow_early_resets=True)
         return env
 
     return _init

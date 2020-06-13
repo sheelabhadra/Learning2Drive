@@ -1,5 +1,5 @@
-# Code adapted from https://github.com/araffin/rl-baselines-zoo
-# Author: Antonin Raffin
+# Code adapted from https://github.com/araffin/learning-to-drive-in-5-minutes/
+# Author: Sheelabhadra Dey
 import argparse
 import os
 import time
@@ -16,7 +16,6 @@ from stable_baselines.ppo2.ppo2 import constfn
 from config import MIN_THROTTLE, MAX_THROTTLE, FRAME_SKIP,\
     MAX_CTE_ERROR, SIM_PARAMS, N_COMMAND_HISTORY, Z_SIZE, BASE_ENV, ENV_ID, MAX_STEERING_DIFF
 from utils.utils import make_env, ALGOS, linear_schedule, get_latest_run_id, load_vae, create_callback
-# from teleop.teleop_client import TeleopEnv
 
 from environment.env import Env
 from environment.carla.client import make_carla_client, CarlaClient
@@ -37,10 +36,6 @@ parser.add_argument('-vae', '--vae-path', help='Path to saved VAE', type=str, de
 parser.add_argument('--save-vae', action='store_true', default=False,
                     help='Save VAE')
 parser.add_argument('--seed', help='Random generator seed', type=int, default=0)
-parser.add_argument('--random-features', action='store_true', default=False,
-                    help='Use random features')
-parser.add_argument('--teleop', action='store_true', default=False,
-                    help='Use teleoperation for training')
 args = parser.parse_args()
 
 set_global_seeds(args.seed)
@@ -90,30 +85,22 @@ if args.algo in ["ppo2", "sac"]:
         else:
             raise ValueError('Invalid valid for {}: {}'.format(key, hyperparams[key]))
 
-# Should we overwrite the number of timesteps?
 if args.n_timesteps > 0:
     n_timesteps = args.n_timesteps
 else:
     n_timesteps = int(hyperparams['n_timesteps'])
 del hyperparams['n_timesteps']
 
-normalize = False
-
 with make_carla_client('localhost', 2000) as client:
     print("CarlaClient connected")
 
-    if not args.teleop:
-        env = DummyVecEnv([make_env(client, args.seed, vae=vae, teleop=args.teleop)])
-    else:
-        env = make_env(args.seed, vae=vae, teleop=args.teleop,
-                       n_stack=hyperparams.get('frame_stack', 1))()
+    env = DummyVecEnv([make_env(client, args.seed, vae=vae)])
 
     # Optional Frame-stacking
     n_stack = 1
     if hyperparams.get('frame_stack', False):
         n_stack = hyperparams['frame_stack']
-        if not args.teleop:
-            env = VecFrameStack(env, n_stack)
+        env = VecFrameStack(env, n_stack)
         print("Stacking {} frames".format(n_stack))
         del hyperparams['frame_stack']
 

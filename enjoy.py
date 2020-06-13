@@ -1,6 +1,5 @@
-# Code adapted from https://github.com/araffin/rl-baselines-zoo
-# Author: Antonin Raffin
-
+# Code adapted from https://github.com/araffin/learning-to-drive-in-5-minutes/
+# Author: Sheelabhadra Dey
 import argparse
 import os
 import time

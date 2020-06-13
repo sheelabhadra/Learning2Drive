@@ -35,22 +35,13 @@ MIN_THROTTLE = 0.4
 MAX_THROTTLE = 0.6
 # Number of past commands to concatenate with the input
 N_COMMAND_HISTORY = 20
-# Max cross track error (used in normal mode to reset the car)
-MAX_CTE_ERROR = 2.0
-# Level to use for training
-LEVEL = 0
 
 # Action repeat
 FRAME_SKIP = 1
-Z_SIZE = 512  # Only used for random features
 TEST_FRAME_SKIP = 1
 
 BASE_ENV = "Env"
 ENV_ID = "Carla-v0"
 # Params that are logged
 SIM_PARAMS = ['MIN_THROTTLE', 'MAX_THROTTLE', 'FRAME_SKIP',
-              'MAX_CTE_ERROR', 'N_COMMAND_HISTORY', 'MAX_STEERING_DIFF']
-
-# DEBUG PARAMS
-# Show input and reconstruction in the teleop panel
-SHOW_IMAGES_TELEOP = True
+              'N_COMMAND_HISTORY', 'MAX_STEERING_DIFF']

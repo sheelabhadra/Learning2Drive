@@ -18,7 +18,7 @@ from environment.carla.sensor import Camera
 from environment.carla.carla_server_pb2 import Control
 
 class Env(gym.Env):
-    def __init__(self, client, vae=None, min_throttle=0.2, max_throttle=0.5, n_command_history=0, frame_skip=2, n_stack=1, action_lambda=0.5):
+    def __init__(self, client, vae=None, min_throttle=0.4, max_throttle=0.6, n_command_history=20, frame_skip=1, n_stack=1, action_lambda=0.5):
         self.client = client
         # save last n commands
         self.n_commands = 2
@@ -101,16 +101,6 @@ class Env(gym.Env):
 
         return observation, reward, done, info
 
-    # def step(self, action):
-    #     while True:
-    #         try:
-    #             with make_carla_client('localhost', 2000) as client:
-    #                 self.client = client
-    #                 return self.step_env(action)
-    #         except TCPConnectionError as error:
-    #             print(error)
-    #             time.sleep(1.0)
-
     def step(self, action):
         # Convert from [-1, 1] to [0, 1]
         t = (action[1] + 1) / 2
@@ -153,7 +143,6 @@ class Env(gym.Env):
             SendNonPlayerAgentsInfo=False,
             NumberOfVehicles=0,
             NumberOfPedestrians=0,
-            # WeatherId=random.choice([1]),
             WeatherId=random.choice([1]),
             QualityLevel='Epic'
         )
@@ -166,14 +155,10 @@ class Env(gym.Env):
         settings.add_sensor(camera)
         observation = None
 
-        # self.start_client()
         scene = self.client.load_settings(settings)
         number_of_player_starts = len(scene.player_start_spots)
         player_start = random.randint(0, max(0, number_of_player_starts - 1))
         self.client.start_episode(player_start)
-
-        # action = np.zeros(2)
-        # observation, _, _,_ = self.step(action)
 
         measurements, sensor_data = self.client.read_data()
         im = sensor_data['CameraRGB'].data
