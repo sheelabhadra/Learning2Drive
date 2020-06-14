@@ -17,7 +17,7 @@ python train.py --algo sac -vae <path-to-vae> -n 10000
 ```
 python enjoy.py --algo sac -vae path-to-vae.pkl --exp-id 0 -n 2000
 ```
-Check `test.py` for more options.
+Check `enjoy.py` for more options.
 
 ## Train the Variational Autoencoder (VAE)
 0. Collect images by manually driving the car around the track. Don't forget to store the images captured by the camera on the car into a folder.
