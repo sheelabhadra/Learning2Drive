@@ -1,7 +1,7 @@
 PyYAML
 mpi4py
 numpy
-tensorflow==1.14.0
+tensorflow==2.5.3
 pillow
 gym
 stable-baselines==2.4.1
